@@ -1,0 +1,32 @@
+spring-powerpoint
+Copyright 2026 the spring-powerpoint authors
+
+This product includes software developed by Coreoz.
+
+Coreoz PPT-Templates (https://github.com/Coreoz/PPT-Templates), licensed under the
+Apache License, Version 2.0 — a copy is in LICENSE-coreoz.txt.
+
+The template engine has never been released for Apache POI 4 or later: the published
+com.coreoz:ppt-templates:1.0.1 is compiled against org.apache.poi.POIXMLDocumentPart, which POI 4
+moved to org.apache.poi.ooxml.POIXMLDocumentPart. The POI 5 compatible sources of the master branch
+are therefore vendored into this project, in spring-powerpoint-core:
+
+    src/main/java/com/coreoz/ppt/*.java                      (12 files)
+    src/main/java/org/apache/poi/ooxml/PptPoiBridge.java
+
+Origin: branch master, commit fb8b7386a9ad7dce9e139f4a6839c3037a142803 (2024-09).
+
+Changes made to the vendored files:
+
+  * Lombok annotations (@Value, @AllArgsConstructor, @SneakyThrows) replaced by plain Java:
+    explicit constructors, static of(...) factory methods, getters, and try/catch blocks wrapping
+    IOException into UncheckedIOException. The public shape of every class is unchanged.
+  * The @Deprecated annotation of PptPoiBridge was removed: it only discourages external use, which
+    its JavaDoc states as well, and it made every internal call site emit a warning.
+
+PptPoiBridge stays in the org.apache.poi.ooxml package, as upstream: it calls
+POIXMLDocumentPart.removeRelation, which is protected. This works on the class path but not with the
+Java Platform Module System.
+
+This product also includes software from the Apache Software Foundation:
+Apache POI (https://poi.apache.org), licensed under the Apache License, Version 2.0.

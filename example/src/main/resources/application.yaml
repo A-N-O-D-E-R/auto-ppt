@@ -1,0 +1,12 @@
+powerpoint:
+  default-theme: corporate
+  templates:
+    location: classpath:/powerpoint
+
+spring:
+  main:
+    web-application-type: none
+
+logging:
+  level:
+    io.github.anoder.powerpoint: INFO

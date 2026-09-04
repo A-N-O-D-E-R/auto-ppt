@@ -1,0 +1,45 @@
+/*
+ * Vendored from Coreoz PPT-Templates (https://github.com/Coreoz/PPT-Templates),
+ * branch master @ fb8b7386a9ad7dce9e139f4a6839c3037a142803, licensed Apache-2.0.
+ * Changes: the upstream {@code @Deprecated} annotation was removed — it only discourages external use,
+ * which the JavaDoc below already states, and it made every internal call site warn. See NOTICE.
+ */
+package org.apache.poi.ooxml;
+
+import org.apache.poi.xslf.usermodel.XSLFTextRun;
+import org.apache.xmlbeans.XmlObject;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTRegularTextRun;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTextField;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTextLineBreak;
+
+/**
+ * This is an internal class, it should not be considered as a public API:
+ * this class will be deleted without any warning.
+ */
+public class PptPoiBridge {
+
+	public static void removeRelation(POIXMLDocumentPart parent, POIXMLDocumentPart child) {
+		parent.removeRelation(child);
+	}
+
+	public static void removeHyperlink(XSLFTextRun textRun) {
+		XmlObject xml = textRun.getXmlObject();
+		if (xml instanceof CTTextField) {
+			CTTextField tf = (CTTextField) xml;
+			if (tf.isSetRPr()) {
+				tf.getRPr().unsetHlinkClick();
+			}
+		} else if (xml instanceof CTTextLineBreak) {
+			CTTextLineBreak tlb = (CTTextLineBreak) xml;
+			if (tlb.isSetRPr()) {
+				tlb.getRPr().unsetHlinkClick();
+			}
+		} else if (xml instanceof CTRegularTextRun) {
+			CTRegularTextRun tr = (CTRegularTextRun) xml;
+			if (tr.isSetRPr()) {
+				tr.getRPr().unsetHlinkClick();
+			}
+		}
+	}
+
+}
